@@ -1,6 +1,6 @@
 {
   "name": "vue-linklist-example",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "vue-linklist example",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,6 @@
     "webpack-serve": "^2.0.2"
   },
   "dependencies": {
-    "vue-linklist": "^0.0.1"
+    "vue-linklist": "^0.0.2"
   }
 }

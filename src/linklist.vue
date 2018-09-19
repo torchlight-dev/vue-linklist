@@ -9,7 +9,7 @@
     y: 30
   };
   const baseTransform = `translate(${base.x}, ${base.y})`;
-svg(width="640" height="480" xmlns="http://www.w3.org/2000/svg")
+svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg")
   g(transform=baseTransform)
     title linklist
     line(
@@ -53,7 +53,29 @@ svg(width="640" height="480" xmlns="http://www.w3.org/2000/svg")
 <script>
 export default {
   props: {
-    source: Array
+    source: {
+      type: Array,
+      required: true
+    },
+    width: {
+      type: [Number, String],
+      default: 640
+    },
+    height: {
+      type: [Number, String],
+      default: 480
+    },
+    box: {
+      type: Object,
+      default() {
+        return {
+          width: 100,
+          height: 50,
+          margin: 10,
+          space: 80
+        }
+      }
+    },
   },
   data() {
     return {
@@ -62,14 +84,6 @@ export default {
     };
   },
   computed: {
-    box() {
-      return {
-        width: 100,
-        height: 50,
-        margin: 10,
-        space: 80
-      };
-    },
     lines() {
       return this.pairs.map(pair => {
         return {

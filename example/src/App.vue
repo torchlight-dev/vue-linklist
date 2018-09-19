@@ -1,8 +1,11 @@
 <template lang="pug">
   #app
     h1 Welcome to vue-linklist
-    Linklist(:source="source" @updatedList="showList")
-
+    input(type="range" min="50" max="300" v-model="width")
+    input(type="range" min="30" max="100" v-model="height")
+    input(type="range" min="10" max="100" v-model="margin")
+    input(type="range" min="50" max="300" v-model="space")
+    Linklist(:source="source" @updatedList="showList" width="800" height="400" :box="box")
     p {{ result }}
 </template>
 
@@ -18,6 +21,10 @@ export default {
   },
   data() {
     return {
+      width: 100,
+      height: 50,
+      margin: 10,
+      space: 80,
       source: [{
         category: 'students',
         elements: [{
@@ -42,6 +49,16 @@ export default {
       }],
       result: []
     };
+  },
+  computed: {
+    box() {
+      return {
+        width: Number(this.width),
+        height: Number(this.height),
+        margin: Number(this.margin),
+        space: Number(this.space)
+      }
+    }
   },
   methods: {
     showList(pairs) {

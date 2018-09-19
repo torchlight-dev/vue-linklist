@@ -1,6 +1,6 @@
 {
   "name": "vue-linklist",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "linklist UI library for vue",
   "main": "dist/linklist.umd.js",
   "module": "dist/linklist.esm.js",
