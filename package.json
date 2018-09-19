@@ -1,0 +1,63 @@
+{
+  "name": "vue-linklist",
+  "version": "0.0.1",
+  "description": "linklist UI library for vue",
+  "main": "dist/linklist.umd.js",
+  "module": "dist/linklist.esm.js",
+  "unpkg": "dist/linklist.min.js",
+  "files": [
+    "README.md",
+    "package.json",
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
+    "build:umd": "rollup --config ./rollup.config.js --format umd --file dist/linklist.umd.js",
+    "build:es": "rollup --config ./rollup.config.js --format es --file dist/linklist.esm.js",
+    "build:unpkg": "rollup --config ./rollup.config.js --format iife --file dist/linklist.min.js",
+    "test": "NODE_PATH=src ava",
+    "prepublish": "npm run build"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "source": [
+      "src/*.js"
+    ],
+    "verbose": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torchlight-dev/vue-linklist.git"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "torchlight",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/torchlight-dev/vue-linklist/issues"
+  },
+  "homepage": "https://github.com/torchlight-dev/vue-linklist#readme",
+  "devDependencies": {
+    "autoprefixer": "^9.1.5",
+    "ava": "^0.25.0",
+    "node-sass": "^4.9.3",
+    "postcss-url": "^8.0.0",
+    "pug": "^2.0.3",
+    "rollup": "^0.66.0",
+    "rollup-plugin-buble": "^0.19.2",
+    "rollup-plugin-uglify-es": "^0.0.1",
+    "rollup-plugin-vue": "^4.3.2",
+    "sinon": "^6.3.4",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "dependencies": {
+    "vue": "^2.5.17"
+  }
+}

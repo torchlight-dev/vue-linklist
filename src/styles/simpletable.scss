@@ -1,0 +1,201 @@
+.handsontable .columnSorting {
+  position: unset;
+}
+.shr-border-bottom {
+  border-bottom: 1px solid #666;
+}
+.simple-table /deep/ {
+  .table {
+    font-size: 11px;
+    margin: 0;
+    width: 100%;
+
+    .ht_clone_bottom,
+    .ht_clone_bottom_left_corner {
+      border-bottom: 1px solid #666;
+    }
+
+    .ht_clone_left {
+      table {
+        th:last-child,
+        td:last-child {
+          border-right: 1px solid #d4d4d4;
+        }
+      }
+    }
+
+    table {
+      background-color: #fff;
+    }
+    thead {
+      th:first-child {
+        vertical-align: middle;
+      }
+    }
+    th {
+      position: relative;
+      background: #666;
+      color: #fff;
+      border: none;
+      border-top: none;
+      border-left: 1px solid #d4d4d4;
+      border-bottom: none;
+      padding: 0 5px;
+      text-align: left;
+      vertical-align: middle;
+      font-weight: normal;
+      visibility: visible;
+
+      &.headerCheckBox {
+        .columnSorting {
+          display: none;
+        }
+      }
+      &:first-child {
+        border-left: 0;
+        padding-left: 10px;
+      }
+      .relative {
+        padding: 7.5px 0;
+        display: block;
+        line-height: 1;
+      }
+      .base-cell {
+        position: relative;
+      }
+      .columnSorting {
+        position: initial;
+        &.colHeader {
+          &:hover {
+            text-decoration: none;
+            cursor: default;
+          }
+          &.ascending {
+            &::after {
+              display: none;
+            }
+          }
+          &.descending {
+            &::before {
+              display: none;
+            }
+          }
+        }
+        &::before,
+        &::after {
+          content: '';
+          width: 8px;
+          height: 5px;
+          background-size: 100%;
+          color: #fff;
+          position: absolute;
+          cursor: pointer;
+        }
+        &::before {
+          top: 13px;
+          right: 0;
+          z-index: 2;
+          transform: rotate(180deg);
+        }
+        &::after {
+          bottom: 11px;
+          right: 0;
+          z-index: 2;
+        }
+        .status-header {
+          width: 67%;
+          overflow: hidden;
+        }
+        .wrap-header {
+          white-space: normal;
+          width: 80%;
+          display: flex;
+          align-items: center;
+          height: 22px;
+          .wrap-header-content {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-right: 5px;
+          }
+          .sort-background {
+            position: absolute;
+            right: -10px;
+            top: 12px;
+            width: 30px;
+            height: 15px;
+            z-index: 1;
+          }
+        }
+      }
+    }
+    td {
+      height: 47px;
+      padding: 0 5px;
+      border-right: 0;
+      border-left: 1px solid #d4d4d4;
+      border-bottom: 0;
+      border-top: 1px solid #666;
+      background-color: transparent;
+      overflow: visible;
+      vertical-align: middle;
+      &:first-child {
+        border-left: 0;
+        padding: 0 10px;
+      }
+      .base-cell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      &.name-column {
+        padding: 0;
+        position: relative;
+      }
+    }
+    tr {
+      -webkit-transition: all 0.2s linear;
+      transition: all 0.2s linear;
+      &.top-row {
+        background-color: #e9e9e9;
+        .name-column {
+          padding: 0 10px;
+        }
+        .total-row-title {
+          font-weight: bold;
+        }
+      }
+      &:nth-child(even) {
+        td {
+          background: #f9f9f9;
+        }
+      }
+      &.inactive-row {
+        background-color: #eee !important;
+        td {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+  .table-cell {
+    white-space: nowrap;
+    line-height: 1.42857143;
+    &__item {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &__unit {
+      span {
+        margin-right: 3px;
+      }
+    }
+  }
+  .ht__highlight {
+    background: #666 !important;
+    color: #fff !important;
+  }
+}
+.table-pagination {
+  text-align: center;
+}
