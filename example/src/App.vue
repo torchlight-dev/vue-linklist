@@ -8,7 +8,7 @@
 
 <script>
 import Vue from 'vue';
-import LinkList from 'vue-linklist';
+import Linklist from 'vue-linklist';
 // import Linklist from '../../src/';    // if you wanna develop
 
 export default {
