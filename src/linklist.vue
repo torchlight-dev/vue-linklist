@@ -14,17 +14,13 @@ svg(width="640" height="480" xmlns="http://www.w3.org/2000/svg")
     title linklist
     line(
       v-for="line in lines"
-      stroke-linecap="null"
-      stroke-linejoin="null"
       :x1="categoryX(line.start.categoryIndex) + box.width"
       :y1="elementY(line.start.nameIndex) + box.height / 2"
       :x2="categoryX(line.end.categoryIndex)"
       :y2="elementY(line.end.nameIndex) + box.height / 2"
-      fill-opacity="null"
-      stroke-opacity="null"
       stroke-width="10"
       stroke="rgb(119, 0, 255)"
-      fill="none"
+      @click="onLineClicked(line)"
     )
     g(v-for="(category, categoryIndex) in source" :transform="categoryTransform(categoryIndex)")
       template(v-for="(element, index) in category.elements")
@@ -77,14 +73,8 @@ export default {
     lines() {
       return this.pairs.map(pair => {
         return {
-          start: this.findElementIndex({
-            category: pair.start.category,
-            name: pair.start.name
-          }),
-          end: this.findElementIndex({
-            category: pair.end.category,
-            name: pair.end.name
-          })
+          start: Object.assign(pair.start, this.findElementIndex(pair.start)),
+          end: Object.assign(pair.end, this.findElementIndex(pair.end))
         };
       });
     }
@@ -98,6 +88,12 @@ export default {
         return element.name === name;
       });
       return { categoryIndex, nameIndex };
+    },
+    hasConnected({ start, end }) {
+      return !!this.pairs.find(pair => {
+        return pair.start.category === start.category && pair.start.name === start.name &&
+               pair.end.category === end.category && pair.end.name === end.name;
+      });
     },
     onStartClicked(category, name) {
       this.$set(this.active, 'category', category);
@@ -114,6 +110,12 @@ export default {
       const endIndex = this.findElementIndex({ category, name });
       if (endIndex.categoryIndex - startIndex.categoryIndex !== 1) return;
 
+      // 既に結線されてたらキャンセル
+      if (this.hasConnected({
+        start: this.active,
+        end: { category, name }
+      })) return;
+
       // 結線データを格納
       this.pairs.push({
         start: {
@@ -123,8 +125,19 @@ export default {
         end: { category, name }
       });
       this.active = {};
-
-      // 親に伝達
+      this.noticeToParent();
+    },
+    onLineClicked(line) {
+      this.removeLine(line);
+    },
+    removeLine(line) {
+      this.pairs = this.pairs.filter(pair => {
+        return pair.start.category !== line.start.category || pair.start.name !== line.start.name ||
+               pair.end.category !== line.end.category || pair.end.name !== line.end.name;
+      });
+      this.noticeToParent();
+    },
+    noticeToParent() {
       this.$emit('updatedList', this.pairs);
     },
     categoryX(index) {
@@ -155,5 +168,8 @@ circle {
 .active {
   fill: white;
   stroke-width: 5px;
+}
+line:hover {
+  stroke: rgb(159, 100, 255);
 }
 </style>
