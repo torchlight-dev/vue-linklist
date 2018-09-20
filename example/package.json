@@ -9,6 +9,7 @@
   "author": "torchlight",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "css-loader": "^1.0.0",
     "node-sass": "^4.9.3",
