@@ -76,12 +76,21 @@ export default {
         }
       }
     },
+    defaultPairs: {
+      type: Array,
+      default: []
+    }
   },
   data() {
     return {
       active: {},
       pairs: []
     };
+  },
+  updated() {
+    if (Array.isArray(this.defaultPairs) && this.pairs.length === 0) {
+      this.pairs = this.defaultPairs;
+    }
   },
   computed: {
     lines() {
