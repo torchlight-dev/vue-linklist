@@ -4,14 +4,9 @@
     x: 20,
     y: 20,
   };
-  const text = {
-    x: 20,
-    y: 30
-  };
   const baseTransform = `translate(${base.x}, ${base.y})`;
 svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg")
   g(transform=baseTransform)
-    title linklist
     line(
       v-for="line in lines"
       :x1="categoryX(line.start.categoryIndex) + box.width"
@@ -26,16 +21,8 @@ svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg")
       template(v-for="(element, index) in category.elements")
         g(:transform="elementTransform(index)")
           rect(:height="box.height" :width="box.width" x=0 y=0 stroke-width="1.5" stroke="#000" fill="#fff")
-          text(
-            x=text.x y=text.y
-            xml:space="preserve"
-            text-anchor="start"
-            font-family="Helvetica, Arial, sans-serif"
-            font-size="18"
-            stroke-width="0"
-            stroke="#000"
-            fill="#000000"
-          ) {{ element.name }}
+          foreignObject(:width="box.width" :height="box.height")
+            slot(:element="element" :categoryIndex="categoryIndex" :elementIndex="index" xmlns="http://www.w3.org/1999/xhtml")
           circle(
             v-if="categoryIndex !== source.length - 1"
             :cx="box.width" :cy="box.height / 2" r="10"
