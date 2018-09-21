@@ -78,7 +78,9 @@ export default {
     },
     defaultPairs: {
       type: Array,
-      default: []
+      default() {
+        return [];
+      }
     }
   },
   data() {
