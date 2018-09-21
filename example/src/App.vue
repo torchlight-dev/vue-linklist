@@ -6,6 +6,7 @@
     input(type="range" min="10" max="100" v-model="margin")
     input(type="range" min="50" max="300" v-model="space")
     Linklist(:source="source" @updatedList="showList" width="800" height="400" :box="box")
+      span.text(slot-scope="list") {{ list.element.name }}({{ list.categoryIndex }},{{ list.elementIndex }})
     p {{ result }}
 </template>
 
@@ -21,7 +22,7 @@ export default {
   },
   data() {
     return {
-      width: 100,
+      width: 150,
       height: 50,
       margin: 10,
       space: 80,
@@ -67,3 +68,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.text {
+  position: relative;
+  left: 20px;
+  top: 15px;
+}
+</style>
