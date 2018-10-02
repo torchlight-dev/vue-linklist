@@ -5,7 +5,7 @@
     y: 20,
   };
   const baseTransform = `translate(${base.x}, ${base.y})`;
-svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg")
+svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg" @mouseup="onDropped()" @mousemove="onDragging" @mouseleave="onMouseLeft()")
   g(transform=baseTransform)
     line(
       v-for="line in lines"
@@ -18,11 +18,29 @@ svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg")
       @click="onLineClicked(line)"
     )
     g(v-for="(category, categoryIndex) in source" :transform="categoryTransform(categoryIndex)")
+      line(
+        v-if="dragCategoryIndex === categoryIndex"
+        :x1="-20"
+        :y1="dragLineY"
+        :x2="box.width + 20"
+        :y2="dragLineY"
+        stroke-width="2"
+        stroke="rgb(100, 0, 255)"
+      )
       template(v-for="(element, index) in category.elements")
         g(:transform="elementTransform(index)")
-          rect(:height="box.height" :width="box.width" x=0 y=0 stroke-width="1.5" stroke="#000" fill="#fff")
-          foreignObject(:width="box.width" :height="box.height")
-            slot(:element="element" :categoryIndex="categoryIndex" :elementIndex="index" xmlns="http://www.w3.org/1999/xhtml")
+          g(@mousedown="onDragStarted(categoryIndex, index, $event)")
+            rect(
+              x=0
+              y=0
+              :height="box.height"
+              :width="box.width"
+              stroke-width="1.5"
+              :stroke="dragCategoryIndex === categoryIndex && dragIndex === index ? 'rgb(100, 0, 255)' : '#000'"
+              :fill="dragCategoryIndex === categoryIndex && dragIndex === index ? 'rgb(100, 0, 255)' : '#fff'"
+            )
+            foreignObject(:width="box.width" :height="box.height")
+              slot(:element="element" :categoryIndex="categoryIndex" :elementIndex="index" xmlns="http://www.w3.org/1999/xhtml")
           circle(
             v-if="categoryIndex !== source.length - 1"
             :cx="box.width" :cy="box.height / 2" r="10"
@@ -38,6 +56,7 @@ svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg")
 </template>
 
 <script>
+import { moveAt } from './utils';
 export default {
   props: {
     source: {
@@ -73,7 +92,10 @@ export default {
   data() {
     return {
       active: {},
-      pairs: []
+      pairs: [],
+      dragIndex: null,
+      dragCategoryIndex: null,
+      dragY: 0
     };
   },
   updated() {
@@ -89,6 +111,12 @@ export default {
           end: Object.assign(pair.end, this.findElementIndex(pair.end))
         };
       });
+    },
+    dropIndex() {
+      return Math.floor(this.dragY / (this.box.height + this.box.margin));
+    },
+    dragLineY() {
+      return (this.box.height + this.box.margin) * this.dropIndex - this.box.margin / 2;
     }
   },
   methods: {
@@ -142,6 +170,28 @@ export default {
     onLineClicked(line) {
       this.removeLine(line);
     },
+    onDragStarted(categoryIndex, index, e) {
+      this.dragCategoryIndex = categoryIndex;
+      this.dragIndex = index;
+      this.dragY = e.offsetY;
+    },
+    onDragging(e) {
+      if (this.dragCategoryIndex === null) return;
+      this.dragY = e.offsetY;
+    },
+    onDropped() {
+      if (this.dragCategoryIndex === null) return;
+      this.source[this.dragCategoryIndex].elements = moveAt({
+        array: this.source[this.dragCategoryIndex].elements,
+        index: this.dragIndex,
+        at: this.dropIndex - (this.dragIndex < this.dropIndex ? 1 : 0)
+      });
+      this.onMouseLeft();
+    },
+    onMouseLeft() {
+      this.dragCategoryIndex = null;
+      this.dragIndex = null;
+    },
     removeLine(line) {
       this.pairs = this.pairs.filter(pair => {
         return pair.start.category !== line.start.category || pair.start.name !== line.start.name ||
@@ -183,5 +233,8 @@ circle {
 }
 line:hover {
   stroke: rgb(159, 100, 255);
+}
+foreignObject {
+  user-select: none
 }
 </style>
