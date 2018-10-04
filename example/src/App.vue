@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import Linklist from 'vue-linklist';
 // import Linklist from '../../src/';    // if you wanna develop
 
@@ -32,6 +31,14 @@ export default {
           name: 'bob'
         }, {
           name: 'alice'
+        }, {
+          name: 'test'
+        }, {
+          name: 'tes'
+        }, {
+          name: 'te'
+        }, {
+          name: 't'
         }]
       }, {
         category: 'fruit',
