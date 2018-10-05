@@ -25,6 +25,6 @@
     "webpack-serve": "^2.0.2"
   },
   "dependencies": {
-    "vue-linklist": "^0.0.2"
+    "vue-linklist": "^0.0.4"
   }
 }
