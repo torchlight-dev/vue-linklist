@@ -173,11 +173,11 @@ export default {
     onDragStarted(categoryIndex, index, e) {
       this.dragCategoryIndex = categoryIndex;
       this.dragIndex = index;
-      this.dragY = e.offsetY;
+      this.dragY = e.layerY;
     },
     onDragging(e) {
       if (this.dragCategoryIndex === null) return;
-      this.dragY = e.offsetY;
+      this.dragY = e.layerY;
     },
     onDropped() {
       if (this.dragCategoryIndex === null) return;
