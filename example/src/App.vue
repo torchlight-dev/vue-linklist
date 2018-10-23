@@ -5,7 +5,7 @@
     input(type="range" min="30" max="100" v-model="height")
     input(type="range" min="10" max="100" v-model="margin")
     input(type="range" min="50" max="300" v-model="space")
-    Linklist(:source="source" @updatedList="showList" width="800" height="400" :box="box")
+    Linklist(:source="source" @updatedList="showList" @updatedSource="showSource" width="800" height="400" :box="box")
       span.text(slot-scope="list") {{ list.element.name }}({{ list.categoryIndex }},{{ list.elementIndex }})
     p {{ result }}
 </template>
@@ -71,6 +71,9 @@ export default {
   methods: {
     showList(pairs) {
       this.result = pairs;
+    },
+    showSource(source) {
+      this.source = source;
     }
   }
 }
