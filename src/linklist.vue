@@ -188,6 +188,7 @@ export default {
         at: this.dropIndex - (this.dragIndex < this.dropIndex ? 1 : 0)
       });
       this.onMouseLeft();
+      this.noticeSourceToParent();
     },
     onMouseLeft() {
       this.dragCategoryIndex = null;
@@ -202,6 +203,9 @@ export default {
     },
     noticeToParent() {
       this.$emit('updatedList', this.pairs);
+    },
+    noticeSourceToParent() {
+      this.$emit('updatedSource', this.source);
     },
     categoryX(index) {
       const margin = this.box.width + this.box.space;
