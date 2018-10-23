@@ -1,6 +1,6 @@
 {
   "name": "vue-linklist-example",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "vue-linklist example",
   "main": "index.js",
   "scripts": {
