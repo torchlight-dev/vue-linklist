@@ -99,9 +99,10 @@ export default {
       dragY: 0
     };
   },
-  updated() {
+  mounted() {
     if (Array.isArray(this.defaultPairs) && this.pairs.length === 0) {
       this.pairs = this.defaultPairs;
+      this.noticeToParent();
     }
   },
   computed: {
