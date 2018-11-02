@@ -5,7 +5,7 @@
     input(type="range" min="30" max="100" v-model="height")
     input(type="range" min="10" max="100" v-model="margin")
     input(type="range" min="50" max="300" v-model="space")
-    Linklist(:source="source" @updatedList="showList" @updatedSource="showSource" width="800" height="400" :box="box")
+    Linklist(:source="source" :defaultPairs="defaultPairs" @updatedList="showList" @updatedSource="showSource" width="800" height="400" :box="box")
       span.text(slot-scope="list") {{ list.element.name }}({{ list.categoryIndex }},{{ list.elementIndex }})
     p {{ result }}
 </template>
@@ -55,7 +55,17 @@ export default {
           name: 'cat'
         }]
       }],
-      result: []
+      result: [],
+      defaultPairs: [{
+        start: {
+          category: 'students',
+          name: 'bob'
+        },
+        end: {
+          category: 'fruit',
+          name: 'apple'
+        }
+      }]
     };
   },
   computed: {
