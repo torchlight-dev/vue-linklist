@@ -5232,10 +5232,10 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
   integrity sha512-AA86yKZ5uOKz87/q1UpngEXhbRkaYg1b7HMMVRobNV1IVKqZe8oLIzo6iMocVwZXnYitlGwf2k4ZRLOZlS8oPQ==
 
-vue-linklist@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/vue-linklist/-/vue-linklist-0.0.4.tgz#a08733d0b3c4480d2d27fee3929f5ca0c50fce19"
-  integrity sha512-aa2l9LAY4o1SRZocaaX1gd+8Q00k8L4XbqvOv8s25r/eU7p01VUE3B97ItL0802jPAE71HDtFrkNFPUK5BmGIA==
+vue-linklist@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/vue-linklist/-/vue-linklist-0.0.6.tgz#5885a1066bda13cbb050542d9c006a64cf249e2e"
+  integrity sha512-ZdczuGTulqFy8yyS18laUKbxYsbwEuBtvLXh0S9A0zDkPm9RIoQMshWg8XbEqUhLWck0VdLZpIPyMu6fF2vN+A==
   dependencies:
     vue "^2.5.17"
 
