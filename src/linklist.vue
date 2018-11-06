@@ -237,6 +237,10 @@ export default {
         return validatedStart && validatedEnd;
       });
       this.noticeToParent();
+    },
+    updatePairs(pairs) {
+      this.pairs = pairs;
+      this.refreshPairs();
     }
   },
   watch: {
