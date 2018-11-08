@@ -5,7 +5,9 @@
     input(type="range" min="30" max="100" v-model="height")
     input(type="range" min="10" max="100" v-model="margin")
     input(type="range" min="50" max="300" v-model="space")
-    Linklist(:source="source" :defaultPairs="defaultPairs" @updatedList="showList" @updatedSource="showSource" width="800" height="400" :box="box")
+    br
+    button(@click="setPresetPairs") update pairs
+    Linklist(:source="source" ref="linklist" :defaultPairs="defaultPairs" @updatedList="showList" @updatedSource="showSource" width="800" height="400" :box="box")
       span.text(slot-scope="list") {{ list.element.name }}({{ list.categoryIndex }},{{ list.elementIndex }})
     p {{ result }}
 </template>
@@ -84,6 +86,23 @@ export default {
     },
     showSource(source) {
       this.source = source;
+    },
+    setPresetPairs() {
+      const pairs = [{
+        start: {
+          category: 'fruit',
+          name: 'banana',
+          categoryIndex: 1,
+          nameIndex: 1
+        },
+        end: {
+          category: 'animal',
+          name: 'dog',
+          categoryIndex: 2,
+          nameIndex: 0
+        }
+      }];
+      this.$refs.linklist.updatePairs(pairs)
     }
   }
 }
