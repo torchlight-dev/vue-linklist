@@ -102,7 +102,6 @@ export default {
   mounted() {
     if (Array.isArray(this.defaultPairs) && this.pairs.length === 0) {
       this.pairs = this.defaultPairs;
-      this.noticeToParent();
     }
   },
   computed: {
@@ -223,30 +222,67 @@ export default {
       return `translate(${this.categoryX(index)}, 0)`;
     },
     refreshPairs() {
-      this.pairs = this.pairs.filter(pair => {
-        const validatedStart = this.source.some(category => {
-          return pair.start.category === category.category && category.elements.some(element => {
-            return element.name === pair.start.name;
+      let pairs = [];
+      let input = this.source[0].elements;
+      let middle = this.source[1].elements;
+      let output = this.source[2].elements;
+
+      middle.forEach((element, index) => {
+        if (element.rule.length > 0 && element.rule[0].type === 'mapping') {
+          pairs.push({
+            start: {
+              category: this.source[0].category,
+              categoryIndex: this.source[0].categoryIndex,
+              name: element.rule[0].value,
+              nameIndex:
+                input.find(e => {
+                  return e.name === element.rule[0].value;
+                }).index - 1
+            },
+            end: {
+              category: this.source[1].category,
+              categoryIndex: this.source[1].categoryIndex,
+              name: element.name,
+              nameIndex: element.index - 1
+            }
           });
-        });
-        const validatedEnd = this.source.some(category => {
-          return pair.end.category === category.category && category.elements.some(element => {
-            return element.name === pair.end.name;
-          });
-        });
-        return validatedStart && validatedEnd;
+        }
       });
+
+      output.forEach((element, index) => {
+        let middleElement = middle.find(e => {
+          return (element.rule.length > 0 && e.name === element.rule[0].value);
+        });
+        if (middleElement !== undefined && element.rule[0].type === 'mapping') {
+          pairs.push({
+            start: {
+              category: this.source[1].category,
+              categoryIndex: this.source[1].categoryIndex,
+              name: element.rule[0].value,
+              nameIndex: middleElement.index - 1
+            },
+            end: {
+              category: this.source[2].category,
+              categoryIndex: this.source[2].categoryIndex,
+              name: element.name,
+              nameIndex: element.index - 1
+            }
+          });
+        }
+      });
+      this.pairs = pairs;
       this.noticeToParent();
     },
     updatePairs(pairs) {
       this.pairs = pairs;
-      this.refreshPairs();
     }
   },
   watch: {
     source: {
       handler: function (val, oldVal) {
-        this.refreshPairs();
+        if(this.source.length > 0) {
+          this.refreshPairs();
+        }
       },
       deep: true
     }
