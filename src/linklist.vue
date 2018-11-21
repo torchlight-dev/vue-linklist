@@ -82,12 +82,6 @@ export default {
           space: 80
         }
       }
-    },
-    defaultPairs: {
-      type: Array,
-      default() {
-        return [];
-      }
     }
   },
   data() {
@@ -98,11 +92,6 @@ export default {
       dragCategoryIndex: null,
       dragY: 0
     };
-  },
-  mounted() {
-    if (Array.isArray(this.defaultPairs) && this.pairs.length === 0) {
-      this.pairs = this.defaultPairs;
-    }
   },
   computed: {
     lines() {
@@ -253,7 +242,7 @@ export default {
         let middleElement = middle.find(e => {
           return (element.rule.length > 0 && e.name === element.rule[0].value);
         });
-        if (middleElement !== undefined && element.rule[0].type === 'mapping') {
+        if (middleElement && element.rule[0].type === 'mapping') {
           pairs.push({
             start: {
               category: this.source[1].category,
@@ -272,9 +261,6 @@ export default {
       });
       this.pairs = pairs;
       this.noticeToParent();
-    },
-    updatePairs(pairs) {
-      this.pairs = pairs;
     }
   },
   watch: {
