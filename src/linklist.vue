@@ -82,6 +82,12 @@ export default {
           space: 80
         }
       }
+    },
+    defaultPairs: {
+      type: Array,
+      default() {
+        return [];
+      }
     }
   },
   data() {
@@ -92,6 +98,11 @@ export default {
       dragCategoryIndex: null,
       dragY: 0
     };
+  },
+  mounted() {
+    if (Array.isArray(this.source) && this.pairs.length === 0) {
+      this.pairs = this.defaultPairs;
+    }
   },
   computed: {
     lines() {
@@ -196,6 +207,9 @@ export default {
     noticeSourceToParent() {
       this.$emit('updatedSource', this.source);
     },
+    noticeToUpdatePairs() {
+      this.$emit('updatedPairs', this.source);
+    },
     categoryX(index) {
       const margin = this.box.width + this.box.space;
       return margin * index;
@@ -210,67 +224,8 @@ export default {
     categoryTransform(index) {
       return `translate(${this.categoryX(index)}, 0)`;
     },
-    refreshPairs() {
-      let pairs = [];
-      let input = this.source[0].elements;
-      let middle = this.source[1].elements;
-      let output = this.source[2].elements;
-
-      middle.forEach((element, index) => {
-        if (element.rule.length > 0 && element.rule[0].type === 'mapping') {
-          pairs.push({
-            start: {
-              category: this.source[0].category,
-              categoryIndex: this.source[0].categoryIndex,
-              name: element.rule[0].value,
-              nameIndex:
-                input.find(e => {
-                  return e.name === element.rule[0].value;
-                }).index - 1
-            },
-            end: {
-              category: this.source[1].category,
-              categoryIndex: this.source[1].categoryIndex,
-              name: element.name,
-              nameIndex: element.index - 1
-            }
-          });
-        }
-      });
-
-      output.forEach((element, index) => {
-        let middleElement = middle.find(e => {
-          return (element.rule.length > 0 && e.name === element.rule[0].value);
-        });
-        if (middleElement && element.rule[0].type === 'mapping') {
-          pairs.push({
-            start: {
-              category: this.source[1].category,
-              categoryIndex: this.source[1].categoryIndex,
-              name: element.rule[0].value,
-              nameIndex: middleElement.index - 1
-            },
-            end: {
-              category: this.source[2].category,
-              categoryIndex: this.source[2].categoryIndex,
-              name: element.name,
-              nameIndex: element.index - 1
-            }
-          });
-        }
-      });
+    updatePairs(pairs) {
       this.pairs = pairs;
-      this.noticeToParent();
-    }
-  },
-  watch: {
-    source: {
-      handler: function (val, oldVal) {
-        if(this.source.length > 0) {
-          this.refreshPairs();
-        }
-      },
-      deep: true
     }
   }
 };
