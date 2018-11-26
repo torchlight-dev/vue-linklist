@@ -100,9 +100,8 @@ export default {
     };
   },
   mounted() {
-    if (Array.isArray(this.defaultPairs) && this.pairs.length === 0) {
+    if (Array.isArray(this.source) && this.pairs.length === 0) {
       this.pairs = this.defaultPairs;
-      this.noticeToParent();
     }
   },
   computed: {
@@ -208,6 +207,9 @@ export default {
     noticeSourceToParent() {
       this.$emit('updatedSource', this.source);
     },
+    noticeToUpdatePairs() {
+      this.$emit('updatedPairs', this.source);
+    },
     categoryX(index) {
       const margin = this.box.width + this.box.space;
       return margin * index;
@@ -222,33 +224,8 @@ export default {
     categoryTransform(index) {
       return `translate(${this.categoryX(index)}, 0)`;
     },
-    refreshPairs() {
-      this.pairs = this.pairs.filter(pair => {
-        const validatedStart = this.source.some(category => {
-          return pair.start.category === category.category && category.elements.some(element => {
-            return element.name === pair.start.name;
-          });
-        });
-        const validatedEnd = this.source.some(category => {
-          return pair.end.category === category.category && category.elements.some(element => {
-            return element.name === pair.end.name;
-          });
-        });
-        return validatedStart && validatedEnd;
-      });
-      this.noticeToParent();
-    },
     updatePairs(pairs) {
       this.pairs = pairs;
-      this.refreshPairs();
-    }
-  },
-  watch: {
-    source: {
-      handler: function (val, oldVal) {
-        this.refreshPairs();
-      },
-      deep: true
     }
   }
 };
