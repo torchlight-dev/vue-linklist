@@ -41,19 +41,19 @@ svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg" @mouseup=
             )
             foreignObject(:width="box.width" :height="box.height")
               slot(:element="element" :categoryIndex="categoryIndex" :elementIndex="index" xmlns="http://www.w3.org/1999/xhtml")
-          g
-            circle(
-              v-if="categoryIndex !== source.length - 1"
-              :cx="box.width" :cy="box.height / 2" r="10"
-              @click="onStartClicked(category.category, element.name)"
-              :class="{'active': active.category === category.category && active.name === element.name}"
-            )
-            circle(
-              v-if="categoryIndex !== 0"
-              :cx="0" :cy="box.height / 2" r="10"
-              @click="onEndClicked(category.category, element.name)"
-              :class="{'active': false}"
-            )
+        g(:transform="elementTransform(index)")
+          circle(
+            v-if="categoryIndex !== source.length - 1"
+            :cx="box.width" :cy="box.height / 2" r="10"
+            @click="onStartClicked(category.category, element.name)"
+            :class="{'active': active.category === category.category && active.name === element.name}"
+          )
+          circle(
+            v-if="categoryIndex !== 0"
+            :cx="0" :cy="box.height / 2" r="10"
+            @click="onEndClicked(category.category, element.name)"
+            :class="{'active': false}"
+          )
 </template>
 
 <script>
