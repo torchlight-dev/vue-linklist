@@ -16,6 +16,8 @@ svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg" @mouseup=
       stroke-width="10"
       stroke="rgb(119, 0, 255)"
       @click="onLineClicked(line)"
+      @mouseover="changeClassToBothCircle(line, true)"
+      @mouseleave="changeClassToBothCircle(line, false)"
     )
     g(v-for="(category, categoryIndex) in source" :transform="categoryTransform(categoryIndex)")
       line(
@@ -46,13 +48,13 @@ svg(:width="width" :height="height" xmlns="http://www.w3.org/2000/svg" @mouseup=
               v-if="categoryIndex !== source.length - 1"
               :cx="box.width" :cy="box.height / 2" r="10"
               @click="onStartClicked(category.category, element.name)"
-              :class="{'active': active.category === category.category && active.name === element.name}"
+              :class="{'active': active.category === category.category && active.name === element.name, 'hover': checkHoveredObject(categoryIndex, index, 'startObject') }"
             )
             circle(
               v-if="categoryIndex !== 0"
               :cx="0" :cy="box.height / 2" r="10"
               @click="onEndClicked(category.category, element.name)"
-              :class="{'active': false}"
+              :class="{'active': false, 'hover': checkHoveredObject(categoryIndex, index, 'endObject') }"
             )
 </template>
 
@@ -96,7 +98,15 @@ export default {
       pairs: [],
       dragIndex: null,
       dragCategoryIndex: null,
-      dragY: 0
+      dragY: 0,
+      startObject: {
+        categoryIndex: -1,
+        nameIndex: -1
+      },
+      endObject: {
+        categoryIndex: -1,
+        nameIndex: -1
+      }
     };
   },
   mounted() {
@@ -105,6 +115,27 @@ export default {
     }
   },
   computed: {
+    hoveredObjects: {
+      get: function() {
+        return {
+          startObject: this.startObject,
+          endObject: this.endObject
+        }
+      },
+      set: function ({line, hoverState}) {
+        if (hoverState) {
+          this.startObject.categoryIndex = line.start.categoryIndex;
+          this.startObject.nameIndex = line.start.nameIndex;
+          this.endObject.categoryIndex = line.end.categoryIndex;
+          this.endObject.nameIndex = line.end.nameIndex;
+        } else {
+          this.startObject.categoryIndex = -1;
+          this.startObject.nameIndex = -1;
+          this.endObject.categoryIndex = -1;
+          this.endObject.nameIndex = -1;
+        }
+      }
+    },
     lines() {
       return this.pairs.map(pair => {
         return {
@@ -199,7 +230,14 @@ export default {
         return pair.start.category !== line.start.category || pair.start.name !== line.start.name ||
                pair.end.category !== line.end.category || pair.end.name !== line.end.name;
       });
+      this.changeClassToBothCircle(line, false);
       this.noticeToParent();
+    },
+    changeClassToBothCircle(line, hoverState) {
+      this.hoveredObjects = { line, hoverState };
+    },
+    checkHoveredObject(categoryIndex, elementIndex, target) {
+      return categoryIndex === this.hoveredObjects[target].categoryIndex && elementIndex === this.hoveredObjects[target].nameIndex;
     },
     noticeToParent() {
       this.$emit('updatedList', this.pairs);
@@ -237,6 +275,10 @@ circle {
   transition: all 0.4s cubic-bezier(.17,.67,.88,1.74);
   stroke: rgb(119, 0, 255);
   stroke-width: 1px;
+}
+circle.hover {
+  fill: rgb(159, 100, 255);
+  transition: none;
 }
 .active {
   fill: white;
