@@ -108,10 +108,34 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .text {
   position: relative;
   left: 20px;
   top: 15px;
+}
+
+svg {
+  .circle {
+    fill: #333;
+    transition: all 0.4s cubic-bezier(.17,.67,.88,1.74);
+    stroke: rgb(119, 0, 255);
+    stroke-width: 1px;
+  }
+  circle.hover {
+    fill: rgb(159, 100, 255);
+    transition: none;
+  }
+  circle.active {
+    fill: white;
+    stroke: rgb(119, 0, 255);
+    stroke-width: 5px;
+  }
+  line:hover {
+    stroke: rgb(159, 100, 255);
+  }
+  foreignObject {
+    user-select: none
+  }
 }
 </style>
