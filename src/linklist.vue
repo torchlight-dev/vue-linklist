@@ -268,3 +268,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+foreignObject {
+  user-select: none
+}
+</style>
