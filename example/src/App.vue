@@ -134,8 +134,5 @@ svg {
   line:hover {
     stroke: rgb(159, 100, 255);
   }
-  foreignObject {
-    user-select: none
-  }
 }
 </style>
